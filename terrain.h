@@ -3,8 +3,7 @@
 #include <cstdio>
 #include <fstream> //ifstream, ofstream
 #include <cstdlib> //exit
-
-enum Direction { NORD, SUD, EST, OUEST };
+#include "enumeration.h" //Direction
 
 class Terrain {
 private:
@@ -24,10 +23,12 @@ public:
     int obtenirLigne(int indice);
     int obtenirAltitude(int indice) const;
     int obtenirVoisin(Direction dir, int indice);
+    int* obtenirTousVoisins(int indice);
 
     void modifierAltitude(int indice, unsigned int nouvelleAltitude);
     void afficher();
 
     void exporter();
     void remplir();
+    bool voisinExiste() const;
 };

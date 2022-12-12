@@ -23,11 +23,11 @@ Terrain::Terrain(string fichierSource) {
     ifs.open(fichierSource);
     if(ifs.bad())
         {std::cout<<"Impossible d'ouvrir le fichier " << fichierSource << " en lecture \n"; exit(1);}
-    
+
     ifs >> longueur;
     ifs >> largeur;
     grille = new int[longueur*largeur];
-    
+
     int temp;
     int i = 0;
     while(ifs >> temp) {
@@ -53,7 +53,7 @@ void Terrain::operator=(const Terrain & copie) {
     {
         grille[i] = copie.obtenirAltitude(i);
     }
-    
+
 }
 
 int Terrain::obtenirIndice(int ligne, int colonne) {
@@ -73,29 +73,40 @@ int Terrain::obtenirAltitude(int indice) const {
 }
 
 int Terrain::obtenirVoisin(Direction dir, int indice) {
+
+    if (voisinExiste(dir, indice)) {
+        int ligne = obtenirLigne(indice);
+        int colonne = obtenirColonne(indice);
+
+        switch (dir) {
+            case NORD:
+                return obtenirIndice(ligne-1,colonne);
+            case SUD:
+                return obtenirIndice(ligne+1,colonne);
+            case OUEST:
+                return obtenirIndice(ligne,colonne-1);
+            case EST:
+                return obtenirIndice(ligne,colonne+1);
+        }
+    } else {
+        return -1;
+    }
+}
+
+int* Terrain::obtenirTousVoisins(int indice) {
     int ligne = obtenirLigne(indice);
     int colonne = obtenirColonne(indice);
 
-    switch (dir) {
-        case NORD:
-            if (ligne == 0)
-                return -1;
-            return obtenirIndice(ligne-1,colonne);
-        case SUD:
-            if (ligne == longueur-1)
-                return -1;
-            return obtenirIndice(ligne+1,colonne);
-        case OUEST:
-            if (colonne == 0)
-                return -1;
-            return obtenirIndice(ligne,colonne-1);
-        case EST:
-            if (colonne == largeur-1)
-                return -1;
-            return obtenirIndice(ligne,colonne+1);
-        default:
-            return -1;
+    int* voisins = new int[4];
+    for (Direction e = 0; e < 4; e++) {
+        if (voisinExiste(e, indice)) {
+            voisins[e] = terrain->obtenirVoisin(e, indiceLibrairie);
+        } else {
+            voisins[e] = -1;
+        }
     }
+
+    return voisins;
 }
 
 void Terrain::modifierAltitude(int indice, unsigned int nouvelleAltitude) {
@@ -134,4 +145,26 @@ void Terrain::remplir() {
     {
         modifierAltitude(i, rand() % 100);
     }
+}
+
+bool Terrain::voisinExiste(Direction dir, int indice) const {
+    int ligne = obtenirLigne(indice);
+    int colonne = obtenirColonne(indice);
+
+    switch (dir) {
+        case NORD:
+            if (ligne == 0)
+                return false;
+        case SUD:
+            if (ligne == longueur-1)
+                return false;
+        case OUEST:
+            if (colonne == 0)
+                return false;
+        case EST:
+            if (colonne == largeur-1)
+                return false;
+    }
+
+    return true;
 }

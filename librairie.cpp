@@ -2,12 +2,12 @@
 
 using namespace std;
 
-Librairie::librairie() {
+Librairie::Librairie() {
     ligne = rand() % 10;
     colonne = rand() % 10;
 }
 
-Librairie::librairie(int l, int c) {
+Librairie::Librairie(int l, int c) {
     ligne = l;
     colonne = c;
 }
@@ -53,10 +53,6 @@ void Librairie::dijkstra(const Terrain& terrain) {
                     gris.insert(voisins[i], blanc.at(voisins[i]));
                     blanc.erase(voisins[i]);
                 }
-
-                si  + G[nmin,ni] < PCD[ni].dist alors
-                    PCD[ni].dist ←PCD[nmin].dist + G[nmin,ni]
-                    PCD[ni].pred ← nmin
 
                 if (
                     gris.at(nmin)->distance

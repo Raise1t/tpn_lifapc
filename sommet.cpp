@@ -1,18 +1,18 @@
 #include "sommet.h"
 
-Sommet::sommet() {
+Sommet::Sommet() {
     indice = 0;
     distance = 0;
     predecesseur = 0;
 }
 
-Sommet::sommet(int i) {
+Sommet::Sommet(int i) {
     indice = modifierIndice(0);
     distance = 0;
     predecesseur = 0;
 }
 
-sommet(int i, int dist, int pred) {
+Sommet::Sommet(int i, int dist, int pred) {
     indice = modifierIndice(i);
     distance = dist;
     predecesseur = modifierPredecesseur(pred);

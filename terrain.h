@@ -3,7 +3,12 @@
 #include <cstdio>
 #include <fstream> //ifstream, ofstream
 #include <cstdlib> //exit
-#include "enumeration.h" //Direction
+
+enum Direction { NORD, SUD, EST, OUEST };
+inline Direction operator++ (Direction& d, int) {
+    d = static_cast<Direction>((static_cast<int>(d) + 1) % 4);
+    return d;
+}
 
 class Terrain {
 private:

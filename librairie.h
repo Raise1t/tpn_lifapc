@@ -1,18 +1,16 @@
 #include <math.h>
 #include "terrain.h"
 #include "sommet.h"
-#include "enumeration.h"
 
-class librairie {
+class Librairie {
 private:
     int ligne;
     int colonne;
     Sommet* distances;
 
 public:
-    librairie();
-    librairie(int l, int c);
-    ~librairie();
+    Librairie();
+    Librairie(int l, int c);
 
     void dijkstra(const Terrain& terrain);
 };

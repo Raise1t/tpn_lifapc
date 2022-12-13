@@ -1,15 +1,13 @@
-#include "enumeration.h" //Couleur
-
-class sommet {
+class Sommet {
 private:
     int indice;
     int distance;
     int predecesseur;
 
 public:
-    sommet();
-    sommet(int i);
-    sommet(int i, int dist, int pred, Couleur coul);
+    Sommet();
+    Sommet(int i);
+    Sommet(int i, int dist, int pred);
 
     int obtenirIndice() const;
     int obtenirDistance() const;

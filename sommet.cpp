@@ -7,19 +7,19 @@ Sommet::Sommet() {
 }
 
 Sommet::Sommet(int i) {
-    indice = modifierIndice(0);
+    modifierIndice(0);
     distance = 0;
     predecesseur = 0;
 }
 
 Sommet::Sommet(int i, int dist, int pred) {
-    indice = modifierIndice(i);
+    modifierIndice(i);
     distance = dist;
-    predecesseur = modifierPredecesseur(pred);
+    modifierPredecesseur(pred);
 }
 
 int Sommet::obtenirIndice() const {
-    return indice
+    return indice;
 }
 
 int Sommet::obtenirDistance() const {
@@ -31,7 +31,7 @@ int Sommet::obtenirPredecesseur() const {
 }
 
 
-void modifierIndice(int i) {
+void Sommet::modifierIndice(int i) {
     if (i > 0)
         indice = i;
 }

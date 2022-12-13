@@ -13,61 +13,63 @@ Librairie::Librairie(int l, int c) {
 }
 
 void Librairie::dijkstra(const Terrain& terrain) {
-    vector<Sommet> noir;
-    vector<Sommet> gris;
-    vector<Sommet> blanc;
+    Sommet** noir = new Sommet*[terrain.obtenirDernierIndice()+1];
+    Sommet** gris = new Sommet*[terrain.obtenirDernierIndice()+1];
+    Sommet** blanc= new Sommet*[terrain.obtenirDernierIndice()+1];
 
-    distances = new Sommet[terrain->dernierIndice+1];
-    int indiceLibrairie = terrain->obtenirIndice(ligne, colonne);
-    int* voisins = terrain->obtenirTousVoisins(indiceLibrairie);
+    distances = new Sommet[terrain.obtenirDernierIndice()+1];
+    int indiceLibrairie = terrain.obtenirIndice(ligne, colonne);
+    int* voisins = terrain.obtenirTousVoisins(indiceLibrairie);
 
-    for (int i = 0; i <= terrain->dernierIndice; i++) {
+    for (int i = 0; i <= terrain.obtenirDernierIndice(); i++) {
         if (i != voisins[0] && i != voisins[1] && i != voisins[2] && i != voisins[3]) {
-            blanc.insert(i, new Sommet(i, -1, 0));
+            blanc[i] = new Sommet(i, -1, 0);
         } else {
-            gris.insert(i, new Sommet(
+            gris[i] = new Sommet(
                 i,
-                sqrt(1 + pow(terrain->obtenirAltitude(indiceLibrairie) - terrain->obtenirAltitude(i), 2)),
-                predecesseur = indiceLibrairie
-            ));
+                sqrt(1 + pow(terrain.obtenirAltitude(indiceLibrairie) - terrain.obtenirAltitude(i), 2)),
+                indiceLibrairie
+            );
         }
     }
 
-    noir.insert(indiceLibrairie, gris.at(indiceLibrairie));
-    gris.erase(indiceLibrairie);
+    noir[indiceLibrairie] = gris[indiceLibrairie];
+    gris[indiceLibrairie] = nullptr;
 
-    while (gris.size() > 0) {
+    bool testGris = true;
+    while (testGris) {
         int min = -1;
         int nmin = -1;
-        for (Sommet & s : gris)) {
-            if (s->distance < min || min == -1) {
-                min = s->distance;
-                nmin = s->indice;
+        for (int i = 0; i < terrain.obtenirDernierIndice(); i++) {
+            Sommet* s = gris[i];
+            if (s->obtenirDistance() < min || min == -1) {
+                min = s->obtenirDistance();
+                nmin = s->obtenirIndice();
             }
         }
 
-        voisins = terrain->obtenirTousVoisins(nmin);
+        voisins = terrain.obtenirTousVoisins(nmin);
         for (int i = 0; i < 4; i++) {
-            if (!noir.at(voisins[i])) {
-                if(blanc.at(voisins[i])) {
-                    gris.insert(voisins[i], blanc.at(voisins[i]));
-                    blanc.erase(voisins[i]);
+            if (!noir[voisins[i]]) {
+                if(blanc[voisins[i]]) {
+                    gris[voisins[i]] = blanc[voisins[i]];
+                    blanc[voisins[i]] = nullptr;
                 }
 
                 if (
-                    gris.at(nmin)->distance
+                    gris[nmin]->obtenirDistance()
                     +
-                    sqrt(1 + pow(terrain->obtenirAltitude(nmin) - terrain->obtenirAltitude(voisins[i]), 2))
+                    sqrt(1 + pow(terrain.obtenirAltitude(nmin) - terrain.obtenirAltitude(voisins[i]), 2))
                     <
-                    gris.at(voisins[i])->distance
+                    gris[voisins[i]]->obtenirDistance()
                 ) {
-                    gris.at(voisins[i])->modifierDistance(gris.at(nmin)->distance + sqrt(1 + pow(terrain->obtenirAltitude(nmin) - terrain->obtenirAltitude(voisins[i]), 2)));
-                    gris.at(voisins[i])->predecesseur = nmin;
+                    gris[voisins[i]]->modifierDistance(gris[nmin]->obtenirDistance() + sqrt(1 + pow(terrain.obtenirAltitude(nmin) - terrain.obtenirAltitude(voisins[i]), 2)));
+                    gris[voisins[i]]->modifierPredecesseur(nmin);
                 }
             }
         }
 
-        noir.insert(nmin, gris.at(nmin));
-        gris.erase(nmin);
+        noir[nmin] = gris[nmin];
+        gris[nmin] = nullptr;
     }
 }

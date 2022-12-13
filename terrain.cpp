@@ -56,15 +56,15 @@ void Terrain::operator=(const Terrain & copie) {
 
 }
 
-int Terrain::obtenirIndice(int ligne, int colonne) {
+int Terrain::obtenirIndice(int ligne, int colonne) const {
     return ligne*largeur+colonne;
 }
 
-int Terrain::obtenirColonne(int indice) {
+int Terrain::obtenirColonne(int indice) const {
     return indice % largeur;
 }
 
-int Terrain::obtenirLigne(int indice) {
+int Terrain::obtenirLigne(int indice) const {
     return indice / largeur;
 }
 
@@ -72,7 +72,7 @@ int Terrain::obtenirAltitude(int indice) const {
     return grille[indice];
 }
 
-int Terrain::obtenirVoisin(Direction dir, int indice) {
+int Terrain::obtenirVoisin(Direction dir, int indice) const {
 
     if (voisinExiste(dir, indice)) {
         int ligne = obtenirLigne(indice);
@@ -88,25 +88,26 @@ int Terrain::obtenirVoisin(Direction dir, int indice) {
             case EST:
                 return obtenirIndice(ligne,colonne+1);
         }
-    } else {
-        return -1;
     }
+
+    return -1;
 }
 
-int* Terrain::obtenirTousVoisins(int indice) {
-    int ligne = obtenirLigne(indice);
-    int colonne = obtenirColonne(indice);
-
+int* Terrain::obtenirTousVoisins(int indice) const {
     int* voisins = new int[4];
-    for (Direction e = 0; e < 4; e++) {
+    for (Direction e = NORD; e < 4; e++) {
         if (voisinExiste(e, indice)) {
-            voisins[e] = terrain->obtenirVoisin(e, indiceLibrairie);
+            voisins[e] = obtenirVoisin(e, indice);
         } else {
             voisins[e] = -1;
         }
     }
 
     return voisins;
+}
+
+int Terrain::obtenirDernierIndice() const {
+    return dernierIndice;
 }
 
 void Terrain::modifierAltitude(int indice, unsigned int nouvelleAltitude) {

@@ -23,17 +23,18 @@ public:
     ~Terrain();
     void operator=(const Terrain & copie);
 
-    int obtenirIndice(int i, int j);
-    int obtenirColonne(int indice);
-    int obtenirLigne(int indice);
+    int obtenirIndice(int i, int j) const;
+    int obtenirColonne(int indice) const;
+    int obtenirLigne(int indice) const;
     int obtenirAltitude(int indice) const;
-    int obtenirVoisin(Direction dir, int indice);
-    int* obtenirTousVoisins(int indice);
+    int obtenirVoisin(Direction dir, int indice) const;
+    int* obtenirTousVoisins(int indice) const;
+    int obtenirDernierIndice() const;
 
     void modifierAltitude(int indice, unsigned int nouvelleAltitude);
     void afficher();
 
     void exporter();
     void remplir();
-    bool voisinExiste() const;
+    bool voisinExiste(Direction dir, int indice) const;
 };
